@@ -31,7 +31,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 	<dl>
 		<dt>ニックネーム<span class="required">必須</span></dt>
 		<dd>
-      <input type="text" name="name" size="35" maxlength="255" value="" />
+      <input type="text" name="name" size="35" maxlength="255" value="<?php print($_POST['name']); ?>" />
       <?php if ($error['name']==='blank'): ?>
       <p class="error">ニックネームを入力してください！</p>
       <?php endif; ?>
