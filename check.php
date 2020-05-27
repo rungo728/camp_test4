@@ -1,3 +1,14 @@
+<?php
+	session_start();
+	// joinに値が入っているかどうかを検査する
+	if (!isset($_SESSION['join'])){
+		// 値が入っていなければ入力画面に戻す
+		header('location: index.php');
+		exit();
+	}
+
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -6,7 +17,7 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>会員登録</title>
 
-	<link rel="stylesheet" href="../style.css" />
+	<link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 <div id="wrap">
@@ -21,10 +32,17 @@
 	<dl>
 		<dt>ニックネーム</dt>
 		<dd>
-        </dd>
+    <!-- htmlspecialcharshaは安全に出力するための記述 -->
+    <?php print(htmlspecialchars($_SESSION['join']
+    // joinのなかのnameを出力するということ
+    ['name'], ENT_QUOTES)); ?>
+    </dd>
 		<dt>メールアドレス</dt>
 		<dd>
-        </dd>
+    <?php print(htmlspecialchars($_SESSION['join']
+    // joinのなかのemailを出力するということ
+    ['email'], ENT_QUOTES)); ?>
+    </dd>
 		<dt>パスワード</dt>
 		<dd>
 		【表示されません】
