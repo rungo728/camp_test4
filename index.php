@@ -1,8 +1,13 @@
 <?php
 // NOTICEエラーを非表示にする記述
 error_reporting(E_ALL & ~E_NOTICE);
+?>
+<?php
+// 入力画面で入力した情報を保存しておく
+session_start();
 // 項目がすべて入力がされている時にのみ発動するようにする
 if (!empty($_POST)){
+  // $_POSTは配列になっている
   // ニックネームが空かどうかの確認
   if ($_POST['name']=== ''){
     $error['name']='blank';
@@ -20,6 +25,9 @@ if (!empty($_POST)){
     $error['password']='blank';
   }
   if (empty($error)){
+    // エラーが発生しなかったら入力内容を保存する
+    // 配列$_POSTをjoinに代入する
+    $_SESSION['join']= $_POST;
     // エラーが発生しなかったら入力確認画面に進む
     header('location: check.php');
     // index.phpが呼び出された時にcheck.phpにジャンプする設定
@@ -27,8 +35,11 @@ if (!empty($_POST)){
   }
 
 }
-
-
+// アクションがrewrite出会った場合かつjoinに値が入っている時だけ
+if ($_REQUEST['action']== 'rewrite' && isset($_SESSION['join'])){
+  // joinに入っている値を$_POSTに代入して値を再現する
+  $_POST = $_SESSION['join'];
+}
 
 
 ?>
@@ -57,7 +68,7 @@ if (!empty($_POST)){
 		<dd>
       <!-- Value属性にPOSTの値を設定 -->
       <!-- htmlspecialchars( 変換対象, 変換パターン, 文字コード )  -->
-      <input type="text" name="name" size="35" maxlength="255" placeholder="nickname" value="<?php print (htmlspecialchars($_POST['name'],ENT_QUOTES)); ?>" />
+      <input type="text" name="name" size="35" maxlength="255" placeholder="" value="<?php print (htmlspecialchars($_POST['name'],ENT_QUOTES)); ?>" />
       <?php if ($error['name']==='blank'): ?>
       <p class="error">ニックネームを入力してください</p>
       <?php endif; ?>
