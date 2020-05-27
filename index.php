@@ -5,6 +5,7 @@ if ($_POST['name']=== ''){
 
 
 }
+// NOTICEエラーを非表示にする記述
 error_reporting(E_ALL & ~E_NOTICE);
 
 ?>
@@ -31,7 +32,9 @@ error_reporting(E_ALL & ~E_NOTICE);
 	<dl>
 		<dt>ニックネーム<span class="required">必須</span></dt>
 		<dd>
-      <input type="text" name="name" size="35" maxlength="255" value="<?php print($_POST['name']); ?>" />
+      <!-- Value属性にPOSTの値を設定 -->
+      <!-- htmlspecialchars( 変換対象, 変換パターン, 文字コード )  -->
+      <input type="text" name="name" size="35" maxlength="255" value="<?php print (htmlspecialchars($_POST['name'],ENT_QUOTES)); ?>" />
       <?php if ($error['name']==='blank'): ?>
       <p class="error">ニックネームを入力してください！</p>
       <?php endif; ?>
