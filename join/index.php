@@ -27,14 +27,13 @@ if (!empty($_POST)){
   if (empty($error)){
     // アップロードするファイル名を記述する
     // $_FILES['image']は配列、['name']はファイル名
-    $image = date('YmdHis') . $_FILES['image']
-    ['name'];
+    $image = date('YmdHis') . $_FILES['image']['name'];
     // 例えば20200528052017myarticle.pngというファイルが作成される
     // $_FILESに選択されたファイルをアップロード
     // 一時的に['image']['tmp_name']の中に画像をアップロード（１番目のパラメーター）
     move_uploaded_file($_FILES['image']['tmp_name'],
     // '../member_picture/' . $imageはアップロードしたファイルの移動先（２番目のパラメーター）
-    '../member_picture/' . $image);
+    '../member_pictures/' . $image);
     // エラーが発生しなかったら入力内容を保存する
     // 配列$_POSTと$imageをjoinに代入する
     $_SESSION['join']= $_POST;
@@ -62,7 +61,7 @@ if ($_REQUEST['action']== 'rewrite' && isset($_SESSION['join'])){
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>会員登録</title>
 
-	<link rel="stylesheet" href="css/style.css" />
+	<link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
 <div id="wrap">
