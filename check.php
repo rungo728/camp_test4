@@ -3,7 +3,7 @@
 	// joinに値が入っているかどうかを検査する
 	if (!isset($_SESSION['join'])){
 		// 値が入っていなければ入力画面に戻す
-		header('location: index.php');
+		header('Location: index.php');
 		exit();
 	}
 

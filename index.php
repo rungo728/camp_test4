@@ -25,11 +25,22 @@ if (!empty($_POST)){
     $error['password']='blank';
   }
   if (empty($error)){
+    // アップロードするファイル名を記述する
+    // $_FILES['image']は配列、['name']はファイル名
+    $image = date('YmdHis') . $_FILES['image']
+    ['name'];
+    // 例えば20200528052017myarticle.pngというファイルが作成される
+    // $_FILESに選択されたファイルをアップロード
+    // 一時的に['image']['tmp_name']の中に画像をアップロード（１番目のパラメーター）
+    move_uploaded_file($_FILES['image']['tmp_name'],
+    // '../member_picture/' . $imageはアップロードしたファイルの移動先（２番目のパラメーター）
+    '../member_picture/' . $image);
     // エラーが発生しなかったら入力内容を保存する
-    // 配列$_POSTをjoinに代入する
+    // 配列$_POSTと$imageをjoinに代入する
     $_SESSION['join']= $_POST;
+    $_SESSION['join']['image'] = $image;
     // エラーが発生しなかったら入力確認画面に進む
-    header('location: check.php');
+    header('Location: check.php');
     // index.phpが呼び出された時にcheck.phpにジャンプする設定
     exit();
   }
@@ -62,6 +73,7 @@ if ($_REQUEST['action']== 'rewrite' && isset($_SESSION['join'])){
 <div id="content">
 <p>次のフォームに必要事項をご記入ください。</p>
 <!-- form actionが空の場合は元のページ（index.phpにジャンプする -->
+<!-- enctype="multipart/form-data"は画像アップロードするための記述 -->
 <form action="" method="post" enctype="multipart/form-data">
 	<dl>
 		<dt>ニックネーム<span class="required">必須</span></dt>
