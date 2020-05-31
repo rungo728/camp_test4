@@ -4,6 +4,7 @@ require('dbconnect.php');
 // session変数に保存したidとtimeがある場合は
 // time()は現在の時刻、それよりも大きい、つまり現在の時刻から一時間以上経っている場合、自動的にログアウト
 if (isset($_SESSION['id']) && $_SESSION['time']+ 3600 > time()){
+  // ログインしている時
   // time()を代入することで時間を更新する
   $_SESSION['time'] = time();
 
