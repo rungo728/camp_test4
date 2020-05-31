@@ -27,6 +27,7 @@ if (!empty($_POST)){
   // まず画像を＄filenameに代入
   $filename = $_FILES['image']['name'];
   if (!empty($filename)){
+    // アップロードした画像が正しいかどうか検査するための条件分岐
     $ext =substr($filename, -3);
     // ファイルの拡張子を得ることができるのでそこから条件をつける
     if ($ext != 'jpg' && $ext != 'gif' && $ext != 'png'){
