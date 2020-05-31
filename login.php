@@ -6,9 +6,15 @@ error_reporting(E_ALL & ~E_NOTICE);
 <?php
 session_start();
 require('dbconnect.php');
-// ログインボタンが押されて呼び出されたのかどうかの判断を記述
-// $_POSTが空でなければ
+// ログインボタンが押されて呼び出されたのかまたはログイン画面が初めて開かれて呼び出されたのかの判断を記述
+if ($_COOKIE['email'] !== ''){
+  // 変数$email
+  $email = $_COOKIE['email'];
+}
+// $_POSTが空でなく、ログインボタンを押した時に
 if(!empty($_POST)){
+  // $_POST['email']で$emailを上書きする
+  $email = $_POST['email'];
   // データベースから情報を引っ張ってくる
   if ($_POST['email']!== '' && $_POST['password'] !== ''){
     // データベースにお問い合わせ
@@ -26,6 +32,13 @@ if(!empty($_POST)){
       // ログインした情報をsession変数に保存しておくため
       $_SESSION['id'] = $member['id'];
       $_SESSION['time'] = time();
+      // トップページに遷移する直前の部分で
+      // $_POSTのsaveキーがオンになっていれば
+      if ($_POST['save']=== 'on'){
+        // メールアドレスをcookieに保存する
+        setcookie('email',$_POST['email'],time()+60*60*24*14);
+
+      }
       header('Location: index.php');
       exit();
     }else{
@@ -64,7 +77,7 @@ if(!empty($_POST)){
       <dl>
         <dt>メールアドレス</dt>
         <dd>
-          <input type="text" name="email" size="35" maxlength="255" value="<?php print (htmlspecialchars($_POST['email'],ENT_QUOTES)); ?>" />
+          <input type="text" name="email" size="35" maxlength="255" value="<?php print (htmlspecialchars($email,ENT_QUOTES)); ?>" />
           <?php if($error['login'] === 'blank'):?>
             <p class="error">メールアドレスとパスワードをご記入ください</p>
           <?php endif; ?>
