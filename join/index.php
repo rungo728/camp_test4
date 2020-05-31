@@ -24,6 +24,18 @@ if (!empty($_POST)){
   if ($_POST['password']=== ''){
     $error['password']='blank';
   }
+  // まず画像を＄filenameに代入
+  $filename = $_FILES['image']['name'];
+  if (!empty($filename)){
+    $ext =substr($filename, -3);
+    // ファイルの拡張子を得ることができるのでそこから条件をつける
+    if ($ext != 'jpg' && $ext != 'gif' && $ext != 'png'){
+      // 画像をtypeにするというエラー
+      $error['image'] = 'type';
+      // htmlの入力フォーム部分でエラー表示するように記述する
+    }
+
+  }
   if (empty($error)){
     // アップロードするファイル名を記述する
     // $_FILES['image']は配列、['name']はファイル名
@@ -103,6 +115,13 @@ if ($_REQUEST['action']== 'rewrite' && isset($_SESSION['join'])){
 		<dt>写真など</dt>
 		<dd>
       <input type="file" name="image" size="35" value="test"  />
+      <?php if ($error['image']==='type'): ?>
+      <p class="error">写真は「.gif」または「．jpg」「.png」の画像を指定してください</p>
+      <?php endif; ?>
+      <!-- ファイルを選択した後でエラーが起こっても再現できるようにする -->
+      <?php if (!empty($error)): ?>
+      <p class="error">改めて画像を指定してください</p>
+      <?php endif; ?>
     </dd>
 	</dl>
 	<div><input type="submit" value="入力内容を確認する" /></div>
