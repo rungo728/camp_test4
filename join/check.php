@@ -1,9 +1,29 @@
 <?php
 	session_start();
+	// 会員入力内容をデータベースに登録する
+	require('../dbconnect.php');
 	// joinに値が入っているかどうかを検査する
 	if (!isset($_SESSION['join'])){
 		// 値が入っていなければ入力画面に戻す
 		header('Location: index.php');
+		exit();
+	}
+	if (!empty($_POST)){
+		// データベースへの登録(membersテーブルに)
+		$statement = $db->prepare('INSERT INTO members SET name=?, email=?,password=?,picture=?,created=NOW()');
+		// executeメソッドの値として１つずつ設定をしていく
+		echo $statement->execute(array(
+			// joinというセッション変数のname等を以下に記入することによって上記の？の部分を埋めていく
+			$_SESSION['join']['name'],
+			$_SESSION['join']['email'],
+			// sha1という機能を使ってパスワードを暗号化する
+			sha1($_SESSION['join']['password']),
+			$_SESSION['join']['image']
+		));
+		// unsetでSESSIONで保存した内容を空にする（データベースに保存した後は不要になるので）
+		unset($_SESSION['join']);
+
+		header('Location: thanks.php');
 		exit();
 	}
 
