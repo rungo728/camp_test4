@@ -1,3 +1,27 @@
+<?php
+session_start();
+require('dbconnect.php');
+// session変数に保存したidとtimeがある場合は
+// time()は現在の時刻、それよりも大きい、つまり現在の時刻から一時間以上経っている場合、自動的にログアウト
+if (isset($_SESSION['id']) && $_SESSION['time']+ 3600 > time()){
+  // time()を代入することで時間を更新する
+  $_SESSION['time'] = time();
+
+  $members = $db->prepare('SELECT * FROM members WHERE id=?');
+  // idを使ってデータベースから会員情報を出力する
+  $members->execute(array($_SESSION['id']));
+  $member = $members->fetch();
+}else{
+  // ログインしていない時にログイン画面に促す処理
+  header('Location: login.php');
+  exit();
+}
+// 投稿ボタンがクリックされれば
+if (!empty($_POST)){
+
+}
+
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -18,7 +42,8 @@
   	<div style="text-align: right"><a href="logout.php">ログアウト</a></div>
     <form action="" method="post">
       <dl>
-        <dt>○○さん、メッセージをどうぞ</dt>
+        <!-- 上記変数$memberのデータベース情報からname部分を取り出して出力 -->
+        <dt><?php print(htmlspecialchars($member['name'], ENT_QUOTES));?>さん、メッセージをどうぞ</dt>
         <dd>
           <textarea name="message" cols="50" rows="5"></textarea>
           <input type="hidden" name="reply_post_id" value="" />
