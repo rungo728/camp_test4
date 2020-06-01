@@ -1,4 +1,8 @@
 <?php
+// NOTICEエラーを非表示にする記述
+error_reporting(E_ALL & ~E_NOTICE);
+?>
+<?php
 // エラー確認のために記述
 ini_set('display_errors', 1);
 
@@ -23,14 +27,16 @@ if (isset($_SESSION['id']) && $_SESSION['time']+ 3600 > time()){
 // 投稿ボタンがクリックされれば
 if(!empty($_POST)){
   if($_POST['message'] !== ''){
-    $message = $db->prepare('INSERT INTO posts SET member_id=?, message=?, created=NOW()');
+    $message = $db->prepare('INSERT INTO posts SET member_id=?, message=?,reply_message_id=?, created=NOW()');
     // エラー確認のため記述
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
     $message->execute(array(
       $member['id'],
-      $_POST['message'] 
+      $_POST['message'],
+      $_POST['reply_post_id']
+
     ));
     header('Location: index.php');
     exit();
@@ -39,6 +45,18 @@ if(!empty($_POST)){
 // 投稿を取得するプログラム、queryメソッドで直接SQLを呼び出す
 // mとpはテーブル名につけるショートカットの名前
 $posts = $db->query('SELECT m.name,m.picture, p.* FROM members m,posts p WHERE m.id=p.member_id ORDER BY p.created DESC');
+
+// もしresがクリックされた場合
+if (isset($_REQUEST['res'])){
+  // 返信処理、まずデータベースに問い合わせ(p.idも確認？)
+  $response = $db->prepare('SELECT m.name,m.picture, p.* FROM members m,posts p WHERE m.id=p.member_id AND p.id=?');
+  // p.idに対してurlパラメータの数字を指定する
+  $response->execute(array($_REQUEST['res']));
+  // 返事が返ってくる
+  $table = $response->fetch();
+  // @をつけてtableのnameとmessageも出力
+  $message = '@'.$table['name'].''.$table['message'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -50,21 +68,22 @@ $posts = $db->query('SELECT m.name,m.picture, p.* FROM members m,posts p WHERE m
 
 	<link rel="stylesheet" href="css/style.css" />
 </head>
-
 <body>
 <div id="wrap">
   <div id="head">
     <h1>ひとこと掲示板</h1>
   </div>
   <div id="content">
-  	<div style="text-align: right"><a href="logout.php">ログアウト</a></div>
+    <div style="text-align: right"><a href="logout.php">ログアウト</a></div>
     <form action="" method="post">
       <dl>
         <!-- 上記変数$memberのデータベース情報からname部分を取り出して出力 -->
         <dt><?php print(htmlspecialchars($member['name'], ENT_QUOTES));?>さん、メッセージをどうぞ</dt>
         <dd>
-          <textarea name="message" cols="50" rows="5"></textarea>
-          <input type="hidden" name="reply_post_id" value="" />
+          <textarea name="message" cols="50" rows="5"><?php print(htmlspecialchars($message,ENT_QUOTES));?></textarea>
+          <!-- どのメッセージに対しての返信かを判別する -->
+          <!-- value属性に該当の返信するメンバーのidを入れる -->
+          <input type="hidden" name="reply_post_id" value="<?php print(htmlspecialchars($_REQUEST['res'],ENT_QUOTES));?>" />
         </dd>
       </dl>
       <div>
@@ -73,26 +92,31 @@ $posts = $db->query('SELECT m.name,m.picture, p.* FROM members m,posts p WHERE m
         </p>
       </div>
     </form>
-<!-- 配列の中身を精査していき、最後まで$postsから$postに繰り返し代入される -->
-<?php foreach($posts as $post):?>
+    <!-- 配列の中身を精査していき、最後まで$postsから$postに繰り返し代入される -->
+    <?php foreach($posts as $post):?>
     <div class="msg">
-    <img src="member_pictures/<?php print(htmlspecialchars($post['picture'],ENT_QUOTES));?>" width="48" height="48" alt="" />
-    <!-- 変数$postの中からメッセージ部分を表示させる -->
-    <p><?php print(htmlspecialchars($post['message'],ENT_QUOTES));?><span class="name">（<?php print(htmlspecialchars($post['name'],ENT_QUOTES));?>）</span>[<a href="index.php?res=">Re</a>]</p>
-    <p class="day"><a href="view.php?id="><?php print(htmlspecialchars($post['created'],ENT_QUOTES));?></a>
-<a href="view.php?id=">
-返信元のメッセージ</a>
-[<a href="delete.php?id="
-style="color: #F33;">削除</a>]
-    </p>
+      <img src="member_pictures/<?php print(htmlspecialchars($post['picture'],ENT_QUOTES));?>" width="48" height="48" alt="" />
+      <!-- 変数$postの中からメッセージ部分を表示させる -->
+      <p><?php print(htmlspecialchars($post['message'],ENT_QUOTES));?>
+        <span class="name">（<?php print(htmlspecialchars($post['name'],ENT_QUOTES));?>）
+        </span>
+        <!-- Reを押すことでurlのパラメーターが変わりメッセージ投稿部分に名前が表示されるようにする -->
+        [<a href="index.php?res=<?php print(htmlspecialchars($post['id'],ENT_QUOTES));?>">Re</a>]
+      </p>
+      <p class="day"><a href="view.php?id="><?php print(htmlspecialchars($post['created'],ENT_QUOTES));?></a>
+        <a href="view.php?id=">
+        返信元のメッセージ</a>
+        [<a href="delete.php?id="
+        style="color: #F33;">削除</a>]
+      </p>
     </div>
-<?php endforeach; ?>
-
-<ul class="paging">
-<li><a href="index.php?page=">前のページへ</a></li>
-<li><a href="index.php?page=">次のページへ</a></li>
-</ul>
+    <?php endforeach; ?>
   </div>
+  <ul class="paging">
+    <li><a href="index.php?page=">前のページへ</a></li>
+    <li><a href="index.php?page=">次のページへ</a></li>
+  </ul>
+</div>
 </div>
 </body>
 </html>
