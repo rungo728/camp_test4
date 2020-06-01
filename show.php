@@ -1,6 +1,7 @@
 <?php
 session_start();
 require('dbconnect.php');
+// idが空だった場合はトップページに移動
 if (empty($_REQUEST['id'])){
   header('Location: index.php');
   exit();
