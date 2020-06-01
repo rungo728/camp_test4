@@ -95,7 +95,7 @@ if (isset($_REQUEST['res'])){
     <!-- 配列の中身を精査していき、最後まで$postsから$postに繰り返し代入される -->
     <?php foreach($posts as $post):?>
     <div class="msg">
-      <img src="member_pictures/<?php print(htmlspecialchars($post['picture'],ENT_QUOTES));?>" width="48" height="48" alt="" />
+      <img src="member_pictures/<?php print(htmlspecialchars($post['picture'],ENT_QUOTES));?>" width="60" height="50" alt="" />
       <!-- 変数$postの中からメッセージ部分を表示させる -->
       <p><?php print(htmlspecialchars($post['message'],ENT_QUOTES));?>
         <span class="name">（<?php print(htmlspecialchars($post['name'],ENT_QUOTES));?>）
@@ -103,11 +103,14 @@ if (isset($_REQUEST['res'])){
         <!-- Reを押すことでurlのパラメーターが変わりメッセージ投稿部分に名前が表示されるようにする -->
         [<a href="index.php?res=<?php print(htmlspecialchars($post['id'],ENT_QUOTES));?>">Re</a>]
       </p>
-      <p class="day"><a href="show.php?id="><?php print(htmlspecialchars($post['created'],ENT_QUOTES));?></a>
-        <a href="view.php?id=">
+      <p class="day"><a href="show.php?id=<?php print(htmlspecialchars($post['id']));?>"><?php print(htmlspecialchars($post['created'],ENT_QUOTES));?></a>
+        <?php if ($post['reply_message_id'] > 0):?>
+        <a href="show.php?id=<?php print(htmlspecialchars($post['reply_message_id'],ENT_QUOTES));?>">
         返信元のメッセージ</a>
+        <?php endif; ?>
         [<a href="delete.php?id="
         style="color: #F33;">削除</a>]
+
       </p>
     </div>
     <?php endforeach; ?>
