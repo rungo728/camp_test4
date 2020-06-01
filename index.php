@@ -103,7 +103,7 @@ if (isset($_REQUEST['res'])){
         <!-- Reを押すことでurlのパラメーターが変わりメッセージ投稿部分に名前が表示されるようにする -->
         [<a href="index.php?res=<?php print(htmlspecialchars($post['id'],ENT_QUOTES));?>">Re</a>]
       </p>
-      <p class="day"><a href="view.php?id="><?php print(htmlspecialchars($post['created'],ENT_QUOTES));?></a>
+      <p class="day"><a href="show.php?id="><?php print(htmlspecialchars($post['created'],ENT_QUOTES));?></a>
         <a href="view.php?id=">
         返信元のメッセージ</a>
         [<a href="delete.php?id="
