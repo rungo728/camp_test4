@@ -1,4 +1,8 @@
 <?php
+// NOTICEエラーを非表示にする記述
+error_reporting(E_ALL & ~E_NOTICE);
+?>
+<?php
 session_start();
 require('dbconnect.php');
 // 自分のメッセージを削除する
