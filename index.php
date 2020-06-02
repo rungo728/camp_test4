@@ -65,6 +65,7 @@ $posts = $db->prepare('SELECT m.name,m.picture, p.* FROM members m,posts p WHERE
 $posts->bindParam(1, $start, PDO::PARAM_INT);
 $posts->execute();
 
+
 // もしresがクリックされた場合
 if (isset($_REQUEST['res'])){
   // 返信処理、まずデータベースに問い合わせ(p.idも確認？)
@@ -74,7 +75,7 @@ if (isset($_REQUEST['res'])){
   // 返事が返ってくる
   $table = $response->fetch();
   // @をつけてtableのnameとmessageも出力
-  $message = '@'.$table['name'].''.$table['message'];
+  $message = '@'.$table['name'].''.$table['message'] .'＞';
 }
 ?>
 <!DOCTYPE html>
@@ -84,7 +85,7 @@ if (isset($_REQUEST['res'])){
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>ひとこと掲示板</title>
-
+  <link rel="stylesheet" href="css/reset.css" />
 	<link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -112,30 +113,34 @@ if (isset($_REQUEST['res'])){
       </div>
     </form>
     <!-- 配列の中身を精査していき、最後まで$postsから$postに繰り返し代入される -->
-    <?php foreach($posts as $post):?>
-    <div class="msg">
-      <img src="member_pictures/<?php print(htmlspecialchars($post['picture'],ENT_QUOTES));?>" width="60" height="50" alt="" />
-      <!-- 変数$postの中からメッセージ部分を表示させる -->
-      <p><?php print(htmlspecialchars($post['message'],ENT_QUOTES));?>
-        <span class="name">（<?php print(htmlspecialchars($post['name'],ENT_QUOTES));?>）
-        </span>
-        <!-- Reを押すことでurlのパラメーターが変わりメッセージ投稿部分に名前が表示されるようにする -->
-        [<a href="index.php?res=<?php print(htmlspecialchars($post['id'],ENT_QUOTES));?>">Re</a>]
-      </p>
-      <p class="day"><a href="show.php?id=<?php print(htmlspecialchars($post['id']));?>"><?php print(htmlspecialchars($post['created'],ENT_QUOTES));?></a>
-        <?php if ($post['reply_message_id'] > 0):?>
-        <a href="show.php?id=<?php print(htmlspecialchars($post['reply_message_id'],ENT_QUOTES));?>">
-        返信元のメッセージ</a>
-        <?php endif; ?>
-        <!-- どのidの投稿を削除するのかを指定 -->
-        <!-- 自分が投稿したものだけを削除できるように、他人の投稿は削除できないように -->
-        <?php if ($_SESSION['id'] == $post['member_id']): ?>
-        [<a href="delete.php?id=<?php print(htmlspecialchars($post['id']));?>"
-        style="color: #F33;">削除</a>]
-        <?php endif; ?>
-      </p>
+
+    <div id="top_right">
+      <h3>新着メッセージ投稿一覧</h3>
+      <?php foreach($posts as $post):?>
+      <div class="msg">
+          <img src="member_pictures/<?php print(htmlspecialchars($post['picture'],ENT_QUOTES));?>" width="60" height="50" alt="新着メッセージ投稿の画像" />
+          <!-- 変数$postの中からメッセージ部分を表示させる -->
+          <p><?php print(htmlspecialchars($post['message'],ENT_QUOTES));?>
+            <span class="name">（<?php print(htmlspecialchars($post['name'],ENT_QUOTES));?>）
+            </span>
+            <!-- Reを押すことでurlのパラメーターが変わりメッセージ投稿部分に名前が表示されるようにする -->
+            [<a href="index.php?res=<?php print(htmlspecialchars($post['id'],ENT_QUOTES));?>">Re</a>]
+          </p>
+          <p class="day"><a href="show.php?id=<?php print(htmlspecialchars($post['id']));?>">...続きを読む</a>
+            <?php if ($post['reply_message_id'] > 0):?>
+            <a href="show.php?id=<?php print(htmlspecialchars($post['reply_message_id'],ENT_QUOTES));?>">
+            返信元のメッセージ</a>
+            <?php endif; ?>
+            <!-- どのidの投稿を削除するのかを指定 -->
+            <!-- 自分が投稿したものだけを削除できるように、他人の投稿は削除できないように -->
+            <?php if ($_SESSION['id'] == $post['member_id']): ?>
+            [<a href="delete.php?id=<?php print(htmlspecialchars($post['id']));?>"
+            style="color: #F33;">削除</a>]
+            <?php endif; ?>
+          </p>
+      </div>
+      <?php endforeach; ?>
     </div>
-    <?php endforeach; ?>
   </div>
   <ul class="paging">
     <?php if($page > 1): ?>
