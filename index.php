@@ -42,9 +42,28 @@ if(!empty($_POST)){
     exit();
   }
 }
+
+$page = $_REQUEST['page'];
+if ($page == ''){
+  $page = 1;
+}
+$page = max($page, 1);
+// COUNTをcntで取得
+$counts = $db->query('SELECT COUNT(*) AS cnt FROM posts');
+$cnt = $counts->fetch();
+// これで最小のページ数がわかる
+$maxPage = ceil($cnt['cnt']/5);
+// $maxpageのページ数よりも大きい数字を指定しても$maxpageが代入されそれ以上にならないようにする
+$page = min($page, $maxPage);
+// urlのpage=?の部分は１ページ目から５つずつ表示なので２ページ目以降で５の倍数ずつ増やす
+// スタートの位置は0
+$start = ($page - 1)*5;
 // 投稿を取得するプログラム、queryメソッドで直接SQLを呼び出す
 // mとpはテーブル名につけるショートカットの名前
-$posts = $db->query('SELECT m.name,m.picture, p.* FROM members m,posts p WHERE m.id=p.member_id ORDER BY p.created DESC');
+$posts = $db->prepare('SELECT m.name,m.picture, p.* FROM members m,posts p WHERE m.id=p.member_id ORDER BY p.created DESC LIMIT ?,5');
+// executeでやると文字列のパラメータとして渡されるので、bindparamを使用
+$posts->bindParam(1, $start, PDO::PARAM_INT);
+$posts->execute();
 
 // もしresがクリックされた場合
 if (isset($_REQUEST['res'])){
@@ -119,8 +138,12 @@ if (isset($_REQUEST['res'])){
     <?php endforeach; ?>
   </div>
   <ul class="paging">
-    <li><a href="index.php?page=">前のページへ</a></li>
-    <li><a href="index.php?page=">次のページへ</a></li>
+    <?php if($page > 1): ?>
+    <li><a href="index.php?page=<?php print($page-1);?>">前のページへ</a></li>
+    <?php endif; ?>
+    <?php if($page < $maxPage): ?>
+    <li><a href="index.php?page=<?php print($page+1);?>">次のページへ</a></li>
+    <?php endif; ?>
   </ul>
 </div>
 </div>
