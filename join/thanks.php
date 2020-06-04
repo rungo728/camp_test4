@@ -19,7 +19,8 @@
 	<p><a href="../" class="btn-default login">ログインする</a></p>
 	<p><img src="../images/thankyou.png" alt=""></p>
 </div>
-
-</div>
+<footer>
+	<p>Copyright (C) 2019-2020 Campus inc. All Right Reserved.</p>
+</footer>
 </body>
 </html>

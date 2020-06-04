@@ -39,7 +39,7 @@ if(!empty($_POST)){
     $message->execute(array(
       $member['id'],
       $_POST['message'],
-      // $_POST['reply_post_id']
+      $_POST['reply_post_id']
 
     ));
     header('Location: index.php');
@@ -167,5 +167,8 @@ if (isset($_REQUEST['res'])){
     <li><a href="index.php?page=<?php print($page+1);?>">次のページへ</a></li>
     <?php endif; ?>
   </ul>
+  <footer>
+    <p>Copyright (C) 2019-2020 Campus inc. All Right Reserved.</p>
+  </footer>
 </body>
 </html>

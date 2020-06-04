@@ -47,41 +47,42 @@
 </header>
 
 <div id="content">
-<p>記入した内容を確認して、「登録する」ボタンをクリック</p>
-<form action="" method="post">
-	<input type="hidden" name="action" value="submit" />
-	<dl>
-		<dt>ニックネーム</dt>
-		<dd>
-    <!-- htmlspecialcharshaは安全に出力するための記述 -->
-    <?php print(htmlspecialchars($_SESSION['join']
-    // joinのなかのnameを出力するということ
-    ['name'], ENT_QUOTES)); ?>
-    </dd>
-		<dt>メールアドレス</dt>
-		<dd>
-    <?php print(htmlspecialchars($_SESSION['join']
-    // joinのなかのemailを出力するということ
-    ['email'], ENT_QUOTES)); ?>
-    </dd>
-		<dt>パスワード</dt>
-		<dd>
-		【表示されません】
-		</dd>
-		<dt>写真など</dt>
-		<dd>
-			<?php if ($_SESSION['join']['image'] !== ''): ?>
-				<img src="../member_pictures/<?php print(htmlspecialchars($_SESSION['join']['image'],ENT_QUOTES)); ?>" alt="" style="width: 200px;">
-			<?php endif; ?>	
-		</dd>
-	</dl>
-	<div>
-		<a href="index.php?action=rewrite">&laquo;&nbsp;書き直す</a> | 
-		<input class="btn-default"type="submit" value="登録する" />
-	</div>
-</form>
+	<p>記入した内容を確認して、「登録する」ボタンをクリック</p>
+	<form action="" method="post">
+		<input type="hidden" name="action" value="submit" />
+		<dl>
+			<dt>ニックネーム</dt>
+			<dd>
+			<!-- htmlspecialcharshaは安全に出力するための記述 -->
+			<?php print(htmlspecialchars($_SESSION['join']
+			// joinのなかのnameを出力するということ
+			['name'], ENT_QUOTES)); ?>
+			</dd>
+			<dt>メールアドレス</dt>
+			<dd>
+			<?php print(htmlspecialchars($_SESSION['join']
+			// joinのなかのemailを出力するということ
+			['email'], ENT_QUOTES)); ?>
+			</dd>
+			<dt>パスワード</dt>
+			<dd>
+			【表示されません】
+			</dd>
+			<dt>写真など</dt>
+			<dd>
+				<?php if ($_SESSION['join']['image'] !== ''): ?>
+					<img src="../member_pictures/<?php print(htmlspecialchars($_SESSION['join']['image'],ENT_QUOTES)); ?>" alt="" style="width: 200px;">
+				<?php endif; ?>	
+			</dd>
+		</dl>
+		<div>
+			<a href="index.php?action=rewrite">&laquo;&nbsp;書き直す</a> | 
+			<input class="btn-default"type="submit" value="登録する" />
+		</div>
+	</form>
 </div>
-
-</div>
+<footer>
+	<p>Copyright (C) 2019-2020 Campus inc. All Right Reserved.</p>
+</footer>
 </body>
 </html>

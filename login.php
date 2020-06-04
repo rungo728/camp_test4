@@ -102,10 +102,8 @@ if(!empty($_POST)){
       </div>
     </form>
   </div>
-  
-  <div id="foot">
-    <p><img src="" width="136" height="15" alt="" /></p>
-  </div>
-</div>
+  <footer>
+	  <p>Copyright (C) 2019-2020 Campus inc. All Right Reserved.</p>
+  </footer>
 </body>
 </html>
