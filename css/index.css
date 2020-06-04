@@ -1,0 +1,255 @@
+body {
+  background-color: #f6f6f6;
+  color: #333;
+  font-family: "メイリオ", Meiryo;
+}
+a {
+  color: #434343;
+  text-decoration: none;
+}
+a:hover {
+  color: #f6ac4d;
+}
+li {
+  margin-left: 20px;
+  margin-bottom: 0.5em;
+  list-style: none;
+}
+.input-default {
+  width: 100%;
+  margin: 8px 0 16px;
+  height: 100px;
+  padding: 10px 16px 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background: #fff;
+  line-height: 1.5;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+.btn-default {
+  display: block;
+  margin: 8px 0 16px;
+  width: 100%;
+  line-height: 46px;
+  font-size: 14px;
+  border: 1px solid transparent;
+  -webkit-transition: all ease-out 0.3s;
+  transition: all ease-out 0.3s;
+  cursor: pointer;
+  text-align: center;
+}
+.btn-default:hover {
+  background-color: #f6ac4d;
+}
+
+/* ヘッダー */
+header {
+  width: 100%;
+  height: 77px;
+  background-color: #02c39a;
+  padding-top: 25px;
+  margin-bottom: 20px;
+  border-bottom: 3px solid #f6ac4d;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.header_inner {
+  height: 55px;
+  margin: 0 auto;
+}
+.header_inner h1 {
+  background: url(../images/talk2.png) top left no-repeat;
+  padding-left: 50px;
+  font-size: 22px;
+  font-weight: bold;
+  background-size: 33px;
+  float: left;
+}
+nav {
+  font-size: 18px;
+  float: right;
+}
+nav ul li {
+  float: left;
+  border-left: 1px dotted #434343;
+  padding-left: 20px;
+  margin-left: 20px;
+}
+nav ul li:last-child {
+  border-right: 1px dotted #434343;
+  padding-right: 20px;
+}
+h2 {
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+#content {
+  padding: 20px;
+  background-color: #dff3ee;
+  width: 720px;
+  height: auto;
+  margin: 0 auto;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+* html #content {
+  height: 490px;
+}
+
+p {
+  line-height: 1.2em;
+  margin-bottom: 0.5em;
+}
+
+dl {
+  margin-bottom: 10px;
+}
+dt {
+  border-left: 5px solid #106eb7;
+  padding-left: 5px;
+  margin-bottom: 5px;
+}
+dd {
+  margin-bottom: 0.5em;
+}
+
+.required {
+  background-color: #bb1850;
+  color: #fff;
+  font-size: 90%;
+  padding: 2px;
+  margin-left: 10px;
+}
+
+#foot {
+  width: 780px;
+  text-align: right;
+}
+
+th,
+td {
+  border: 1px solid #999;
+  padding: 3px;
+}
+
+th {
+  background-color: #106eb7;
+  color: #fff;
+  font-weight: bold;
+}
+
+.paging {
+  width: auto;
+  height: 32px;
+  margin-top: 10px;
+  text-align: center;
+}
+.paging li {
+  list-style: none;
+  border: 1px solid #dcdddf;
+}
+.paging a {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 32px;
+  padding: 0 8px;
+  display: block;
+}
+
+.error {
+  font-size: 90%;
+  color: #bb1850;
+}
+
+#lead {
+  margin-bottom: 1em;
+}
+#top_right {
+  margin-top: 30px;
+  height: auto;
+}
+#top_right h3 {
+  font-size: 22px;
+  font-weight: bold;
+  background: url(../images/new_icon.png) no-repeat;
+  background-size: 30px;
+  padding-left: 35px;
+}
+.msg {
+  clear: both;
+  border-top: 1px solid #ccc;
+  padding: 15px 0;
+  margin-top: 10px;
+  height: 80px;
+}
+.msg img {
+  float: left;
+  margin-right: 5px;
+}
+.msg p {
+  margin: 0;
+}
+.msg .day,
+.msg .day a {
+  font-size: 12px;
+  font-weight: bold;
+  color: #f6ac4d;
+  padding-left: 10px;
+}
+span.new_date {
+  color: #dcdddf;
+  font-size: 12px;
+  background: url(../images/new_date.png) no-repeat;
+  background: cover;
+  padding-left: 18px;
+}
+span.new_tag {
+  font-size: 12px;
+  background: url(../images/tag.png) no-repeat;
+  background: cover;
+  padding-left: 18px;
+}
+
+@media screen and (max-width: 768px) {
+  .msg {
+    width: 550px;
+    min-height: 70px;
+  }
+  .btn-default {
+    width: 550px;
+  }
+  .input-default {
+    width: 550px;
+  }
+}
+@media screen and (max-width: 500px) {
+  header {
+    max-width: 500px;
+  }
+  .nav-menu {
+    margin-left: 15px;
+    font-size: 11px;
+    font-family: Arial, Helvetica, sans-serif;
+    letter-spacing: 1px;
+  }
+  .msg {
+    width: 460px;
+    min-height: 70px;
+  }
+  .msg img {
+    height: 70px;
+    width: 20%;
+  }
+  .msg dd {
+    max-width: 500px;
+  }
+  .btn-default {
+    width: 460px;
+  }
+  .input-default {
+    width: 460px;
+  }
+}

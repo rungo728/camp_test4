@@ -26,8 +26,8 @@ if (isset($_SESSION['id']) && $_SESSION['time']+ 3600 > time()){
 }
 // 投稿ボタンがクリックされれば
 if(!empty($_POST)){
-  var_dump($member['id']);
-  var_dump($_POST);
+  // var_dump($member['id']);
+  // var_dump($_POST);
   // もしメッセージが保存されたら
   if($_POST['message'] !== ''){
     // 下記条件を実行する
@@ -39,7 +39,7 @@ if(!empty($_POST)){
     $message->execute(array(
       $member['id'],
       $_POST['message'],
-      $_POST['reply_post_id']
+      // $_POST['reply_post_id']
 
     ));
     header('Location: index.php');
@@ -111,7 +111,7 @@ if (isset($_REQUEST['res'])){
         <!-- 上記変数$memberのデータベース情報からname部分を取り出して出力 -->
         <dt><?php print(htmlspecialchars($member['name'], ENT_QUOTES));?>さん、メッセージをどうぞ</dt>
         <dd>
-          <textarea name="message" cols="50" rows="5"><?php print(htmlspecialchars($message,ENT_QUOTES));?></textarea>
+          <textarea class="input-default" name="message" cols="50" rows="5"><?php print(htmlspecialchars($message,ENT_QUOTES));?></textarea>
           <!-- どのメッセージに対しての返信かを判別する -->
           <!-- value属性に該当の返信するメンバーのidを入れる -->
           <input type="hidden" name="reply_post_id" value="<?php print(htmlspecialchars($_REQUEST['res'],ENT_QUOTES));?>" />
@@ -119,7 +119,7 @@ if (isset($_REQUEST['res'])){
       </dl>
       <div>
         <p>
-          <input type="submit" value="投稿する" />
+          <input type="submit" value="投稿する" class="btn-default btn-green" />
         </p>
       </div>
     </form>
@@ -129,26 +129,32 @@ if (isset($_REQUEST['res'])){
       <h3>新着メッセージ投稿一覧</h3>
       <?php foreach($posts as $post):?>
       <div class="msg">
-        <img src="member_pictures/<?php print(htmlspecialchars($post['picture'],ENT_QUOTES));?>" width="160" height="100" alt="新着メッセージ投稿の画像" />
-        <!-- 変数$postの中からメッセージ部分を表示させる -->
-        <p><?php print(htmlspecialchars($post['message'],ENT_QUOTES));?>
-          <span class="name">（<?php print(htmlspecialchars($post['name'],ENT_QUOTES));?>）
-          </span>
-          <!-- Reを押すことでurlのパラメーターが変わりメッセージ投稿部分に名前が表示されるようにする -->
-          [<a href="index.php?res=<?php print(htmlspecialchars($post['id'],ENT_QUOTES));?>">Re</a>]
-        </p>
-        <p class="day"><a href="show.php?id=<?php print(htmlspecialchars($post['id']));?>"><span class="new_date"><?php print(htmlspecialchars($post['created']));?></span>...続きを読む</a>
-          <?php if ($post['reply_message_id'] > 0):?>
-          <a href="show.php?id=<?php print(htmlspecialchars($post['reply_message_id'],ENT_QUOTES));?>"><span class="new_tag">返信元のメッセージ</span>
-          </a>
-          <?php endif; ?>
-          <!-- どのidの投稿を削除するのかを指定 -->
-          <!-- 自分が投稿したものだけを削除できるように、他人の投稿は削除できないように -->
-          <?php if ($_SESSION['id'] == $post['member_id']): ?>
-          [<a href="delete.php?id=<?php print(htmlspecialchars($post['id']));?>"
-          style="color: #F33;">削除</a>]
-          <?php endif; ?>
-        </p>
+        <dl>
+          <dt>
+            <img src="member_pictures/<?php print(htmlspecialchars($post['picture'],ENT_QUOTES));?>" width="160" height="100" alt="新着メッセージ投稿の画像" />
+          </dt>
+          <dd>
+            <!-- 変数$postの中からメッセージ部分を表示させる -->
+            <p><?php print(htmlspecialchars($post['message'],ENT_QUOTES));?>
+              <span class="name">（<?php print(htmlspecialchars($post['name'],ENT_QUOTES));?>）
+              </span>
+              <!-- Reを押すことでurlのパラメーターが変わりメッセージ投稿部分に名前が表示されるようにする -->
+              [<a href="index.php?res=<?php print(htmlspecialchars($post['id'],ENT_QUOTES));?>">Re</a>]
+            </p>
+            <p class="day"><a href="show.php?id=<?php print(htmlspecialchars($post['id']));?>"><span class="new_date"><?php print(htmlspecialchars($post['created']));?></span>...続きを読む</a>
+              <?php if ($post['reply_message_id'] > 0):?>
+              <a href="show.php?id=<?php print(htmlspecialchars($post['reply_message_id'],ENT_QUOTES));?>"><span class="new_tag">返信元のメッセージ</span>
+              </a>
+              <?php endif; ?>
+              <!-- どのidの投稿を削除するのかを指定 -->
+              <!-- 自分が投稿したものだけを削除できるように、他人の投稿は削除できないように -->
+              <?php if ($_SESSION['id'] == $post['member_id']): ?>
+              [<a href="delete.php?id=<?php print(htmlspecialchars($post['id']));?>"
+              style="color: #F33;">削除</a>]
+              <?php endif; ?>
+            </p>
+          </dd>
+        </dl>
       </div>
       <?php endforeach; ?>
     </div>
