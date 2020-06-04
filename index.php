@@ -26,7 +26,11 @@ if (isset($_SESSION['id']) && $_SESSION['time']+ 3600 > time()){
 }
 // 投稿ボタンがクリックされれば
 if(!empty($_POST)){
+  var_dump($member['id']);
+  var_dump($_POST);
+  // もしメッセージが保存されたら
   if($_POST['message'] !== ''){
+    // 下記条件を実行する
     $message = $db->prepare('INSERT INTO posts SET member_id=?, message=?,reply_message_id=?, created=NOW()');
     // エラー確認のため記述
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -86,15 +90,22 @@ if (isset($_REQUEST['res'])){
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>ひとこと掲示板</title>
   <link rel="stylesheet" href="css/reset.css" />
-	<link rel="stylesheet" href="css/style.css" />
+	<link rel="stylesheet" href="css/index.css" />
 </head>
 <body>
-<div id="wrap">
-  <div id="head">
-    <h1>ひとこと掲示板</h1>
-  </div>
-  <div id="content">
-    <div style="text-align: right"><a href="logout.php">ログアウト</a></div>
+  <header>
+    <div class="header_inner">
+      <h1>ひとこと掲示板</h1>
+      <nav>
+       <ul class="nav_menu" >
+         <li>
+          <a href="logout.php">ログアウト</a>
+         </li>
+      </ul>
+      </nav>
+    </div>
+  </header>
+  <div id="content">      
     <form action="" method="post">
       <dl>
         <!-- 上記変数$memberのデータベース情報からname部分を取り出して出力 -->
@@ -118,26 +129,26 @@ if (isset($_REQUEST['res'])){
       <h3>新着メッセージ投稿一覧</h3>
       <?php foreach($posts as $post):?>
       <div class="msg">
-          <img src="member_pictures/<?php print(htmlspecialchars($post['picture'],ENT_QUOTES));?>" width="60" height="50" alt="新着メッセージ投稿の画像" />
-          <!-- 変数$postの中からメッセージ部分を表示させる -->
-          <p><?php print(htmlspecialchars($post['message'],ENT_QUOTES));?>
-            <span class="name">（<?php print(htmlspecialchars($post['name'],ENT_QUOTES));?>）
-            </span>
-            <!-- Reを押すことでurlのパラメーターが変わりメッセージ投稿部分に名前が表示されるようにする -->
-            [<a href="index.php?res=<?php print(htmlspecialchars($post['id'],ENT_QUOTES));?>">Re</a>]
-          </p>
-          <p class="day"><a href="show.php?id=<?php print(htmlspecialchars($post['id']));?>">...続きを読む</a>
-            <?php if ($post['reply_message_id'] > 0):?>
-            <a href="show.php?id=<?php print(htmlspecialchars($post['reply_message_id'],ENT_QUOTES));?>">
-            返信元のメッセージ</a>
-            <?php endif; ?>
-            <!-- どのidの投稿を削除するのかを指定 -->
-            <!-- 自分が投稿したものだけを削除できるように、他人の投稿は削除できないように -->
-            <?php if ($_SESSION['id'] == $post['member_id']): ?>
-            [<a href="delete.php?id=<?php print(htmlspecialchars($post['id']));?>"
-            style="color: #F33;">削除</a>]
-            <?php endif; ?>
-          </p>
+        <img src="member_pictures/<?php print(htmlspecialchars($post['picture'],ENT_QUOTES));?>" width="160" height="100" alt="新着メッセージ投稿の画像" />
+        <!-- 変数$postの中からメッセージ部分を表示させる -->
+        <p><?php print(htmlspecialchars($post['message'],ENT_QUOTES));?>
+          <span class="name">（<?php print(htmlspecialchars($post['name'],ENT_QUOTES));?>）
+          </span>
+          <!-- Reを押すことでurlのパラメーターが変わりメッセージ投稿部分に名前が表示されるようにする -->
+          [<a href="index.php?res=<?php print(htmlspecialchars($post['id'],ENT_QUOTES));?>">Re</a>]
+        </p>
+        <p class="day"><a href="show.php?id=<?php print(htmlspecialchars($post['id']));?>"><span class="new_date"><?php print(htmlspecialchars($post['created']));?></span>...続きを読む</a>
+          <?php if ($post['reply_message_id'] > 0):?>
+          <a href="show.php?id=<?php print(htmlspecialchars($post['reply_message_id'],ENT_QUOTES));?>"><span class="new_tag">返信元のメッセージ</span>
+          </a>
+          <?php endif; ?>
+          <!-- どのidの投稿を削除するのかを指定 -->
+          <!-- 自分が投稿したものだけを削除できるように、他人の投稿は削除できないように -->
+          <?php if ($_SESSION['id'] == $post['member_id']): ?>
+          [<a href="delete.php?id=<?php print(htmlspecialchars($post['id']));?>"
+          style="color: #F33;">削除</a>]
+          <?php endif; ?>
+        </p>
       </div>
       <?php endforeach; ?>
     </div>
@@ -150,7 +161,5 @@ if (isset($_REQUEST['res'])){
     <li><a href="index.php?page=<?php print($page+1);?>">次のページへ</a></li>
     <?php endif; ?>
   </ul>
-</div>
-</div>
 </body>
 </html>
