@@ -111,7 +111,7 @@ if (isset($_REQUEST['res'])){
         <!-- 上記変数$memberのデータベース情報からname部分を取り出して出力 -->
         <dt><?php print(htmlspecialchars($member['name'], ENT_QUOTES));?>さん、メッセージをどうぞ</dt>
         <dd>
-          <textarea class="input-default" name="message" cols="50" rows="5"><?php print(htmlspecialchars($message,ENT_QUOTES));?></textarea>
+          <textarea class="input-default description-box" name="message" cols="50" rows="5"><?php print(htmlspecialchars($message,ENT_QUOTES));?></textarea>
           <!-- どのメッセージに対しての返信かを判別する -->
           <!-- value属性に該当の返信するメンバーのidを入れる -->
           <input type="hidden" name="reply_post_id" value="<?php print(htmlspecialchars($_REQUEST['res'],ENT_QUOTES));?>" />

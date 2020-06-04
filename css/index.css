@@ -10,6 +10,9 @@ a {
 a:hover {
   color: #f6ac4d;
 }
+.login:hover {
+  color: black;
+}
 li {
   margin-left: 20px;
   margin-bottom: 0.5em;
@@ -18,7 +21,7 @@ li {
 .input-default {
   width: 100%;
   margin: 8px 0 16px;
-  height: 100px;
+  height: 48px;
   padding: 10px 16px 8px;
   border-radius: 4px;
   border: 1px solid #ccc;
@@ -41,6 +44,9 @@ li {
 }
 .btn-default:hover {
   background-color: #f6ac4d;
+}
+.description-box {
+  min-height: 140px;
 }
 
 /* ヘッダー */
@@ -88,7 +94,7 @@ h2 {
 #content {
   padding: 20px;
   background-color: #dff3ee;
-  width: 720px;
+  width: 600px;
   height: auto;
   margin: 0 auto;
   margin-bottom: 10px;
@@ -124,10 +130,10 @@ dd {
   margin-left: 10px;
 }
 
-#foot {
+/* #foot {
   width: 780px;
   text-align: right;
-}
+} */
 
 th,
 td {
@@ -224,6 +230,12 @@ span.new_tag {
   .input-default {
     width: 550px;
   }
+  #lead {
+    width: 550px;
+  }
+  #content {
+    width: 550px;
+  }
 }
 @media screen and (max-width: 500px) {
   header {
@@ -235,6 +247,10 @@ span.new_tag {
     font-family: Arial, Helvetica, sans-serif;
     letter-spacing: 1px;
   }
+  #content {
+    width: 460px;
+    padding: 40px 2.5%;
+  }
   .msg {
     width: 460px;
     min-height: 70px;
@@ -244,12 +260,15 @@ span.new_tag {
     width: 20%;
   }
   .msg dd {
-    max-width: 500px;
+    max-width: 460px;
   }
   .btn-default {
     width: 460px;
   }
   .input-default {
+    width: 460px;
+  }
+  #lead {
     width: 460px;
   }
 }

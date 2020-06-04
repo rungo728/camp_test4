@@ -59,15 +59,16 @@ if(!empty($_POST)){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css" href="css/reset.css" />  
-<link rel="stylesheet" type="text/css" href="css/style.css" />
+<link rel="stylesheet" type="text/css" href="css/index.css" />
 <title>ログインする</title>
 </head>
 
 <body>
-<div id="wrap">
-  <div id="head">
-    <h1>ログインする</h1>
-  </div>
+  <header>
+    <div class="header_inner">
+      <h1>ひとこと掲示板</h1>
+    </div>
+  </header>
   <div id="content">
     <div id="lead">
       <p>メールアドレスとパスワードを記入してログインしてください。</p>
@@ -78,7 +79,7 @@ if(!empty($_POST)){
       <dl>
         <dt>メールアドレス</dt>
         <dd>
-          <input type="text" name="email" size="35" maxlength="255" value="<?php print (htmlspecialchars($email,ENT_QUOTES)); ?>" />
+          <input class="input-default" type="text" name="email" size="35" maxlength="255" value="<?php print (htmlspecialchars($email,ENT_QUOTES)); ?>" />
           <?php if($error['login'] === 'blank'):?>
             <p class="error">メールアドレスとパスワードをご記入ください</p>
           <?php endif; ?>
@@ -88,7 +89,7 @@ if(!empty($_POST)){
         </dd>
         <dt>パスワード</dt>
         <dd>
-          <input type="password" name="password" size="35" maxlength="255" value="<?php print (htmlspecialchars($_POST['password'],ENT_QUOTES)); ?>" />
+          <input class="input-default" type="password" name="password" size="35" maxlength="255" value="<?php print (htmlspecialchars($_POST['password'],ENT_QUOTES)); ?>" />
         </dd>
         <dt>ログイン情報の記録</dt>
         <dd>
@@ -97,10 +98,11 @@ if(!empty($_POST)){
         </dd>
       </dl>
       <div>
-        <input type="submit" value="ログインする" />
+        <input class="btn-default" type="submit" value="ログインする" />
       </div>
     </form>
   </div>
+  
   <div id="foot">
     <p><img src="" width="136" height="15" alt="" /></p>
   </div>

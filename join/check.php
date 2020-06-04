@@ -36,17 +36,18 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>会員登録</title>
-
-	<link rel="stylesheet" href="../css/style.css" />
+	<link rel="stylesheet" href="../css/reset.css" />
+	<link rel="stylesheet" href="../css/index.css" />
 </head>
 <body>
-<div id="wrap">
-<div id="head">
-<h1>会員登録</h1>
-</div>
+<header>
+	<div class="header_inner">
+		<h1>ひとこと掲示板</h1>
+	</div>
+</header>
 
 <div id="content">
-<p>記入した内容を確認して、「登録する」ボタンをクリックしてください</p>
+<p>記入した内容を確認して、「登録する」ボタンをクリック</p>
 <form action="" method="post">
 	<input type="hidden" name="action" value="submit" />
 	<dl>
@@ -76,7 +77,7 @@
 	</dl>
 	<div>
 		<a href="index.php?action=rewrite">&laquo;&nbsp;書き直す</a> | 
-		<input type="submit" value="登録する" />
+		<input class="btn-default"type="submit" value="登録する" />
 	</div>
 </form>
 </div>
