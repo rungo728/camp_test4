@@ -19,28 +19,28 @@ $posts->execute(array($_REQUEST['id']));
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>ひとこと掲示板</title>
 	<link rel="stylesheet" href="css/reset.css" />
-	<link rel="stylesheet" href="css/style.css" />
+	<link rel="stylesheet" href="css/index.css" />
 </head>
 
 <body>
-<div id="wrap">
-  <div id="head">
-    <h1>ひとこと掲示板</h1>
+<header>
+	<div class="header_inner">
+		<h1>ひとこと掲示板</h1>
+	</div>
+</header>
+<div id="content">
+<p>&laquo;<a href="index.php">一覧にもどる</a></p>
+<!-- 投稿メッセージが存在する場合は -->
+<!-- SQLから受け取った$postsにfetchによって正常に$postに値が入れば -->
+<?php if ($post = $posts->fetch()):?>
+  <div class="msg">
+  <img src="member_pictures/<?php print(htmlspecialchars($post['picture']));?>"width="200" height="200"/>
+  <p><?php print(htmlspecialchars($post['message']));?><span class="name">（<?php print(htmlspecialchars($post['name']));?>）</span></p>
+  <p class="day"><?php print(htmlspecialchars($post['created']));?></p>
   </div>
-  <div id="content">
-  <p>&laquo;<a href="index.php">一覧にもどる</a></p>
-  <!-- 投稿メッセージが存在する場合は -->
-  <!-- SQLから受け取った$postsにfetchによって正常に$postに値が入れば -->
-  <?php if ($post = $posts->fetch()):?>
-    <div class="msg">
-    <img src="member_pictures/<?php print(htmlspecialchars($post['picture']));?>"width="200" height="200"/>
-    <p><?php print(htmlspecialchars($post['message']));?><span class="name">（<?php print(htmlspecialchars($post['name']));?>）</span></p>
-    <p class="day"><?php print(htmlspecialchars($post['created']));?></p>
-    </div>
-  <?php else: ?>
-  <p>その投稿は削除されたか、URLが間違えています</p>
-  <?php endif; ?>
-  </div>
+<?php else: ?>
+<p>その投稿は削除されたか、URLが間違えています</p>
+<?php endif; ?>
 </div>
 </body>
 </html>
