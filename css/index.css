@@ -189,11 +189,12 @@ th {
   border-top: 1px solid #ccc;
   padding: 15px 0;
   margin-top: 10px;
-  height: 80px;
+  height: 100px;
 }
 .msg img {
   float: left;
   margin-right: 5px;
+  min-height: 100px;
 }
 .msg p {
   margin: 0;
@@ -236,7 +237,10 @@ footer p {
 @media screen and (max-width: 768px) {
   .msg {
     width: 550px;
-    min-height: 70px;
+    min-height: 120px;
+  }
+  .msg img {
+    min-height: 120px;
   }
   .btn-default {
     width: 550px;
@@ -267,10 +271,10 @@ footer p {
   }
   .msg {
     width: 460px;
-    min-height: 70px;
+    min-height: 110px;
   }
   .msg img {
-    height: 70px;
+    min-height: 120px;
     width: 20%;
   }
   .msg dd {
