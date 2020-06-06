@@ -24,28 +24,84 @@ if (isset($_SESSION['id']) && $_SESSION['time']+ 3600 > time()){
   header('Location: login.php');
   exit();
 }
-// 投稿ボタンがクリックされれば
-if(!empty($_POST)){
-  // var_dump($_POST);
-  // もしメッセージが保存されたら
-  if($_POST['message'] !== ''){
-    // 下記条件を実行する
-    $message = $db->prepare('INSERT INTO posts SET member_id=?, message=?,reply_message_id=?, created=NOW()');
-    // エラー確認のため記述
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+// 1. 投稿ボタンがクリック
+if (!empty($_POST)) {
+ 
+  // 2. メッセージが空ではない。
+  if ($_POST['message'] !== '') {
 
-    $message->execute(array(
-      $member['id'],
-      $_POST['message'],
-      $_POST['reply_post_id']
+      $message = $db->prepare('INSERT INTO posts SET member_id=?, message=?,reply_message_id=?, created=NOW()');
+      // エラー確認のため記述
+      $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-    ));
-    header('Location: index.php');
-    exit();
+      // 3. もし返信の場合
+      if (isset($_REQUEST['res'])) {
+          $message->execute(array(
+              $member['id'],
+              $_POST['message'],
+              //　sqlの３つ目の?に $_POST['reply_post_id']を入れる。
+              $_POST['reply_post_id']
+          ));
+
+      // 3. 返信ではない == 通常投稿の場合
+      } else {
+          $message->execute(array(
+              $member['id'],
+              $_POST['message'],
+              //　sqlの３つ目の?に0を入れる。
+              0
+          ));
+      }
+      header('Location: index.php');
+      exit();
   }
 }
+// 投稿ボタンをクリックされれば（通常のメッセージ投稿）
+// if(!empty($_POST)){
+//   // var_dump($member['id']);
+//   // var_dump($_POST);
+//   // もしメッセージが保存されたら
+//   if($_POST['message'] !== ''){
+//     // 下記条件を実行する
+//     $message = $db->prepare('INSERT INTO posts SET member_id=?, message=?,reply_message_id=0, created=NOW()');
+//     // エラー確認のため記述
+//     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//     $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
+//     $message->execute(array(
+//       $member['id'],
+//       $_POST['message'],
+//       // $_POST['reply_post_id']
+
+//     ));
+//     header('Location: index.php');
+//     exit();
+//   }
+// }
+// // 投稿ボタンをクリック（返信の場合）
+// if(!empty($_POST)){
+//   // var_dump($member['id']);
+//   // var_dump($_POST);
+//   // もしメッセージが保存されたら
+//   if($_POST['message'] !== ''){
+//     // 下記条件を実行する
+//     $message = $db->prepare('INSERT INTO posts SET member_id=?, message=?,reply_message_id=?, created=NOW()');
+//     // エラー確認のため記述
+//     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//     $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+//     $message->execute(array(
+//       $member['id'],
+//       $_POST['message'],
+//       $_POST['reply_post_id']
+
+//     ));
+//     header('Location: index.php');
+//     exit();
+//   }
+// }
+// ページネーション部分
 $page = $_REQUEST['page'];
 if ($page == ''){
   $page = 1;
