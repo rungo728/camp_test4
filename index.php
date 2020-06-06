@@ -26,7 +26,6 @@ if (isset($_SESSION['id']) && $_SESSION['time']+ 3600 > time()){
 }
 // 投稿ボタンがクリックされれば
 if(!empty($_POST)){
-  // var_dump($member['id']);
   // var_dump($_POST);
   // もしメッセージが保存されたら
   if($_POST['message'] !== ''){
